@@ -868,10 +868,10 @@ layer.title = function(name, index){
 };
 
 //关闭layer总方法
-layer.close = function(index){
+layer.close = function(index, data){
   var layero = $('#'+ doms[0] + index), type = layero.attr('type'), closeAnim = 'layer-anim-close';
   if(!layero[0]) return;
-  var WRAP = 'layui-layer-wrap', remove = function(){
+  var WRAP = 'layui-layer-wrap', remove = function(d){
     if(type === ready.type[1] && layero.attr('conType') === 'object'){
       layero.children(':not(.'+ doms[5] +')').remove();
       var wrap = layero.find('.'+WRAP);
@@ -892,7 +892,7 @@ layer.close = function(index){
       layero[0].innerHTML = '';
       layero.remove();
     }
-    typeof ready.end[index] === 'function' && ready.end[index]();
+    typeof ready.end[index] === 'function' && ready.end[index](d);
     delete ready.end[index];
   };
   
@@ -909,10 +909,10 @@ layer.close = function(index){
   }
   
   if((layer.ie && layer.ie < 10) || !layero.data('isOutAnim')){
-    remove()
+    remove(data)
   } else {
     setTimeout(function(){
-      remove();
+      remove(data);
     }, 200);
   }
 };

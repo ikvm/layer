@@ -43,6 +43,23 @@ gulp.task('layer', task.minjs); //压缩PC版本
 gulp.task('mobile', task.mincss); //压缩Mobile文件
 gulp.task('other', task.other); //移动一些配件
 
+//打包发行版
+var releaseDir = './release/zip/layer-v' + pkg.version;
+gulp.task('clearZip', function(cb){ //清理
+  return del(['./release/zip/*'], cb);
+});
+gulp.task('r', ['clearZip'], function(){
+  gulp.src('./release/doc/**/*')
+  .pipe(gulp.dest(releaseDir))
+  
+  return gulp.src([
+    './dist/**/*'
+    ,'!./dist/**/moon'
+    ,'!./dist/**/moon/*'
+  ])
+  .pipe(gulp.dest(releaseDir + '/layer'))
+});
+
 //全部
 gulp.task('default', ['clear'], function(){
   for(var key in task){

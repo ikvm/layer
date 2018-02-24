@@ -531,9 +531,9 @@ Class.pt.move = function(){
   });
   
   _DOC.on('mousemove', function(e){
-
     //拖拽移动
     if(dict.moveStart){
+	  config.moveStart && config.moveStart(layero);
       var X = e.clientX - dict.offset[0]
       ,Y = e.clientY - dict.offset[1]
       ,fixed = layero.css('position') === 'fixed';

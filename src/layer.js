@@ -101,7 +101,7 @@ var layer = {
   //主体CSS等待事件
   ready: function(callback){
     var cssname = 'layer', ver = ''
-    ,path = (isLayui ? 'modules/layer/' : 'theme/') + 'default/layer.css?v='+ layer.v + ver;
+    ,path = (isLayui ? 'modules/layer/' : 'skin/') + 'default/layer.css?v='+ layer.v + ver;
     isLayui ? layui.addcss(path, callback, cssname) : ready.link(path, callback, cssname);
     return this;
   },
@@ -345,7 +345,7 @@ Class.pt.creat = function(){
   config.time <= 0 || setTimeout(function(){
     layer.close(that.index)
   }, config.time);
-  that.move().callback();
+  that.move().callback(that);
   
   //为兼容jQuery3.0的css动画影响元素尺寸计算
   if(doms.anim[config.anim]){
@@ -621,12 +621,14 @@ Class.pt.move = function(){
   return that;
 };
 
-Class.pt.callback = function(){
+Class.pt.callback = function(el){
   var that = this, layero = that.layero, config = that.config;
   that.openLayer();
   if(config.success){
     if(config.type == 2){
       layero.find('iframe').on('load', function(){
+        layer.iframeAuto(that.index);
+        el && el.offset();
         config.success(layero, that.index);
       });
     } else {
